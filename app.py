@@ -153,6 +153,16 @@ option = st.sidebar.selectbox(
 
 if option != "Select...":
     symptoms = st.text_input("Describe your symptoms accurately:").lower()
+    # --- HELPER: SHOW AVAILABLE SYMPTOMS ---
+    # This automatically pulls keywords from your selected dictionary
+    current_db = GP_DATA if "General" in option else DERM_DATA if "Dermatologist" in option else PSYCH_DATA
+    
+    all_keywords = []
+    for data in current_db.values():
+        all_keywords.extend(data["symptoms"])
+    
+    # Show a small tip to the user so they aren't guessing
+    st.info(f"💡 **Tip:** I'm trained to recognize words like: {', '.join(all_keywords[:8])}...")
 
     if symptoms:
         # Step 1: Check for Red Flags (Silent Scan)
@@ -226,6 +236,14 @@ if option != "Select...":
                 with col2:
                     st.success("**Traditional Remedy**")
                     st.write(found_condition.get("traditional_remedy"))
+            if found_condition:
+            # NEW FIX: If the user said "No" to the emergency question, 
+            # don't show the "Call 911" box again.
+            if is_emergency and ans == "No":
+                st.info("Emergency ruled out. If you have other symptoms, please describe them.")
+            else:
+                st.markdown(f"### Analysis: {condition_name}")
+                # ... (rest of your display code)
         else:
             st.warning("No specific match found. Try using simpler words like 'fever' or 'cough'.")
 
