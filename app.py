@@ -142,14 +142,15 @@ preference = st.sidebar.radio(
     ["Integrated (Both)", "Western / Clinical 💊", "Traditional / Natural 🌿"]
 )
 
+# 1. The Selectbox ends here with its own closing bracket
 option = st.sidebar.selectbox(
     "Select Specialist:",
     ["Select...", "General Physician", "Dermatologist", "Psychiatrist"]
-    
- if st.sidebar.button("🗑️ Clear Search"):
-    st.rerun() # This refreshes the app and clears the text box
 )
 
+# 2. The Clear Button is a separate piece of code
+if st.sidebar.button("🗑️ Clear Search"):
+    st.rerun()
 # =============================================================
 # 3. THE SMART FLOW
 # =============================================================
