@@ -183,20 +183,14 @@ if option != "Select...":
                 # The code will now naturally continue to the next part!
 
       
-        # --- START OF STEP 3: FLEXIBLE SEARCH ---
+       # --- START OF STEP 3: FLEXIBLE SEARCH ---
         found_condition = None
         
-        # FIX: Match the names exactly as they appear in your sidebar selectbox
-        if option == "General Physician":
-            current_db = GP_DATA
-        elif option == "Dermatologist":
-            current_db = DERM_DATA
-        elif option == "Psychiatrist":
-            current_db = PSYCH_DATA
-        else:
-            current_db = {}
-        
         for condition_key, data in current_db.items():
+            # NEW FIX: Skip the search if this condition was already flagged as an emergency
+            if is_emergency and condition_key == "HEART_ATTACK_RED_FLAG":
+                continue 
+                
             for keyword in data["symptoms"]:
                 if keyword.lower() in symptoms.lower():
                     found_condition = data
