@@ -224,27 +224,22 @@ if option != "Select...":
                 
         # --- STEP 4: DISPLAYING THE RESULTS ---
         if found_condition:
-            st.markdown(f"### Analysis: {condition_name}")
-            col1, col2 = st.columns(2)
-            
-            if preference in ["Integrated (Both)", "Western / Clinical 💊"]:
-                with col1:
-                    st.info("**Western Remedy**")
-                    st.write(found_condition.get("western_remedy"))
-            
-            if preference in ["Integrated (Both)", "Traditional / Natural 🌿"]:
-                with col2:
-                    st.success("**Traditional Remedy**")
-                    st.write(found_condition.get("traditional_remedy"))
-            if found_condition:
-            # NEW FIX: If the user said "No" to the emergency question, 
-            # don't show the "Call 911" box again.
+            # All these lines must be indented further than the 'if' above
             if is_emergency and ans == "No":
-                st.info("Emergency ruled out. If you have other symptoms, please describe them.")
+                st.info("✅ Emergency ruled out. If you have other symptoms, please describe them.")
             else:
                 st.markdown(f"### Analysis: {condition_name}")
-                # ... (rest of your display code)
+                col1, col2 = st.columns(2)
+                
+                if preference in ["Integrated (Both)", "Western / Clinical 💊"]:
+                    with col1:
+                        st.info("**Western Remedy**")
+                        st.write(found_condition.get("western_remedy"))
+                
+                if preference in ["Integrated (Both)", "Traditional / Natural 🌿"]:
+                    with col2:
+                        st.success("**Traditional Remedy**")
+                        st.write(found_condition.get("traditional_remedy"))
         else:
+            # This only shows if found_condition is None
             st.warning("No specific match found. Try using simpler words like 'fever' or 'cough'.")
-
-        
