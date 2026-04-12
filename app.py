@@ -78,7 +78,7 @@ DERM_DATA = {
 
     # TIER 2: Moderate Issue (Dermatologist Appointment) - Chronic Condition
     "PSORIASIS_TIER2": {
-        "symptoms": ["thick silvery scales", "red patches", "flaky skin", "joint stiffness"],
+        "symptoms": ["thick silvery scales", "redness", "patches", "flaky skin", "joint stiffness"],
         "triage_question": "Is the skin condition causing you difficulty walking, significant joint pain, or preventing sleep (Y/N)?",
         "diagnosis": "Possible Psoriasis or Chronic Eczema.",
         "western_remedy": "Book a routine appointment with a Dermatologist or GP for prescription medication and management plan.",
@@ -121,7 +121,7 @@ PSYCH_DATA = {
 
     # TIER 1: Minor Issue (General Consultation) - General Anxiety.
     "GENERAL_ANXIETY_TIER1": {
-        "symptoms": ["general anxiety", "social phobia", "difficulty sleeping", "stress", "feeling worried all the time"],
+        "symptoms": ["general anxiety", "social phobia", "difficulty sleeping", "stress", "feeling worried all the time", "tired"],
         "triage_question": "Do you feel completely overwhelmed by everyday life or has this anxiety been constant for more than one month (Y/N)?",
         "diagnosis": "General Anxiety Disorder or High Stress.",
         "western_remedy": "Consider booking a consultation with a counselor or therapist. Practice mindfulness and try to establish a regular sleep schedule.",
@@ -145,6 +145,9 @@ preference = st.sidebar.radio(
 option = st.sidebar.selectbox(
     "Select Specialist:",
     ["Select...", "General Physician", "Dermatologist", "Psychiatrist"]
+    
+ if st.sidebar.button("🗑️ Clear Search"):
+    st.rerun() # This refreshes the app and clears the text box
 )
 
 # =============================================================
