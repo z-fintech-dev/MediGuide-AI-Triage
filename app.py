@@ -1,122 +1,66 @@
+
 import streamlit as st
 
-# =================================================================================
-# 1. KNOWLEDGE BASE (Your Original Top Scorer Dictionaries)
-# =================================================================================
+# =============================================================
+# 1. THE DATA (Your original "Brain")
+# =============================================================
+# [Include your full GP_DATA, DERM_DATA, and PSYCH_DATA here]
 
-GP_DATA = {
-    "HEART_ATTACK_RED_FLAG": {
-        "symptoms": ["chest pain", "pain in arm or jaw", "shortness of breath", "sweating"],
-        "triage_question": "Is the chest pain crushing and radiating to your left arm or jaw?",
-        "diagnosis": "CRITICAL: Possible Heart Attack.",
-        "western_remedy": "CALL EMERGENCY SERVICES IMMEDIATELY.",
-    },
-    "THE_FLU_TIER2": {
-        "symptoms": ["body aches", "fatigue", "high fever", "chills"],
-        "triage_question": "Are you having difficulty breathing?",
-        "diagnosis": "Possible Influenza (Flu).",
-        "western_remedy": "Contact your GP or rest at home for 5-7 days.",
-        "traditional_remedy": "Use warm compress, garlic, ginger.",
-    },
-    "SPRAIN_TIER1": {
-        "symptoms": ["sprain", "twisted ankle", "joint pain", "swollen joint"],
-        "triage_question": "Can you bear weight on the injured area?",
-        "diagnosis": "Mild to Moderate Sprain.",
-        "western_remedy": "Use RICE method.",
-        "traditional_remedy": "Warm compress, Epsom salt bath.",
-    }
-}
-
-DERM_DATA = {
-    "CELLULITIS_RED_FLAG": {
-        "symptoms": ["rapidly spreading redness", "extreme pain", "hot to touch"],
-        "triage_question": "Do you have a painful, red skin area with a fever?",
-        "diagnosis": "CRITICAL: Possible Cellulitis.",
-        "western_remedy": "CALL EMERGENCY SERVICES IMMEDIATELY.",
-    },
-    "PSORIASIS_TIER2": {
-        "symptoms": ["silvery scales", "red patches", "flaky skin"],
-        "diagnosis": "Possible Psoriasis or Chronic Eczema.",
-        "western_remedy": "Book a Dermatologist appointment.",
-        "traditional_remedy": "Oatmeal baths and natural oils.",
-    }
-}
-
-PSYCH_DATA = {
-    "SUICIDE_RED_FLAG": {
-        "symptoms": ["suicidal thoughts", "self-harm", "harming myself"],
-        "triage_question": "Are you thinking about hurting yourself right now?",
-        "diagnosis": "CRITICAL: Immediate Danger.",
-        "western_remedy": "CALL EMERGENCY SERVICES OR A CRISIS HOTLINE IMMEDIATELY.",
-    },
-    "GENERAL_ANXIETY_TIER1": {
-        "symptoms": ["anxiety", "stress", "difficulty sleeping"],
-        "diagnosis": "General Anxiety Disorder or High Stress.",
-        "western_remedy": "Consult a counselor.",
-        "traditional_remedy": "Deep-breathing and calming teas.",
-    }
-}
-
-# =================================================================================
-# 2. UI SETUP
-# =================================================================================
-
+# =============================================================
+# 2. UI SETTINGS
+# =============================================================
 st.set_page_config(page_title="MediGuide AI", page_icon="🩺")
-st.title("🩺 MediGuide AI Triage System")
-st.write("---")
+st.title("🩺 MediGuide AI: Professional Triage")
 
-# Sidebar Selection
-option = st.sidebar.selectbox(
-    "Choose Specialist",
-    ["Select...", "General Physician (Dr. Vital)", "Dermatologist (Dr. Luminous)", "Psychiatrist (Dr. Insight)"]
+# Treatment Preference - Solves the "Automatic Remedy" mishap
+preference = st.sidebar.radio(
+    "Treatment Preference:",
+    ["Integrated (Both)", "Western / Clinical 💊", "Traditional / Natural 🌿"]
 )
 
-# =================================================================================
-# 3. TRIAGE LOGIC (The "Brain")
-# =================================================================================
+option = st.sidebar.selectbox(
+    "Select Specialist:",
+    ["Select...", "General Physician", "Dermatologist", "Psychiatrist"]
+)
 
-if option == "Select...":
-    st.info("👋 Welcome! Please select a doctor from the sidebar to begin.")
-else:
-    symptoms = st.text_input(f"Consulting {option}: Describe your symptoms below").lower()
+# =============================================================
+# 3. THE SMART FLOW
+# =============================================================
+
+if option != "Select...":
+    symptoms = st.text_input("Describe your symptoms accurately:").lower()
 
     if symptoms:
-        # --- DR. VITAL LOGIC ---
-        if "Vital" in option:
-            if any(k in symptoms for k in GP_DATA["HEART_ATTACK_RED_FLAG"]["symptoms"]):
-                st.error("🚨 EMERGENCY CHECK")
-                ans = st.radio(GP_DATA["HEART_ATTACK_RED_FLAG"]["triage_question"], ["Select...", "Yes", "No"])
-                if ans == "Yes":
-                    st.error(GP_DATA["HEART_ATTACK_RED_FLAG"]["western_remedy"])
+        # Step 1: Check for Red Flags (Silent Scan)
+        is_emergency = False
+        target_data = {}
+        
+        # Example for GP logic (Apply this pattern to all)
+        if option == "General Physician":
+            if any(k in symptoms for k in ["chest pain", "shortness of breath"]):
+                target_data = {
+                    "q": "Is the pain crushing or radiating to your arm?",
+                    "diag": "Possible Heart Attack",
+                    "west": "CALL 911/999 IMMEDIATELY",
+                    "trad": "Seek emergency care immediately."
+                }
+                is_emergency = True
+        
+        # Step 2: Handle Emergency Logic
+        if is_emergency:
+            st.error("🚨 CRITICAL CHECK REQUIRED")
+            ans = st.radio(target_data["q"], ["Select...", "Yes", "No"])
             
-            elif any(k in symptoms for k in GP_DATA["THE_FLU_TIER2"]["symptoms"]):
-                st.success(GP_DATA["THE_FLU_TIER2"]["diagnosis"])
-                st.write(f"**Western:** {GP_DATA['THE_FLU_TIER2']['western_remedy']}")
-                st.write(f"**Traditional:** {GP_DATA['THE_FLU_TIER2']['traditional_remedy']}")
+            if ans == "Yes":
+                st.error(f"**URGENT:** {target_data['west']}")
+                st.stop() # Stop here for safety
+            elif ans == "No":
+                st.success("✅ Emergency ruled out. Proceeding to standard care...")
+                # The code will now naturally continue to the next part!
 
-        # --- DR. LUMINOUS LOGIC ---
-        elif "Luminous" in option:
-            if any(k in symptoms for k in DERM_DATA["CELLULITIS_RED_FLAG"]["symptoms"]):
-                st.error("🚨 EMERGENCY CHECK")
-                ans = st.radio(DERM_DATA["CELLULITIS_RED_FLAG"]["triage_question"], ["Select...", "Yes", "No"])
-                if ans == "Yes":
-                    st.error(DERM_DATA["CELLULITIS_RED_FLAG"]["western_remedy"])
-            
-            elif any(k in symptoms for k in DERM_DATA["PSORIASIS_TIER2"]["symptoms"]):
-                st.success(DERM_DATA["PSORIASIS_TIER2"]["diagnosis"])
-                st.write(f"**Traditional:** {DERM_DATA['PSORIASIS_TIER2']['traditional_remedy']}")
-
-        # --- DR. INSIGHT LOGIC ---
-        elif "Insight" in option:
-            if any(k in symptoms for k in PSYCH_DATA["SUICIDE_RED_FLAG"]["symptoms"]):
-                st.error("🚨 EMERGENCY CHECK")
-                ans = st.radio(PSYCH_DATA["SUICIDE_RED_FLAG"]["triage_question"], ["Select...", "Yes", "No"])
-                if ans == "Yes":
-                    st.error(PSYCH_DATA["SUICIDE_RED_FLAG"]["western_remedy"])
-            
-            elif any(k in symptoms for k in PSYCH_DATA["GENERAL_ANXIETY_TIER1"]["symptoms"]):
-                st.success(PSYCH_DATA["GENERAL_ANXIETY_TIER1"]["diagnosis"])
-                st.write(f"**Traditional:** {PSYCH_DATA['GENERAL_ANXIETY_TIER1']['traditional_remedy']}")
-
-st.divider()
-st.caption("⚠️ **Disclaimer:** For educational purposes only. Always seek professional medical advice for health concerns.")
+        # Step 3: Standard Care (The "Treatment Plan")
+        st.subheader("📋 Your Personalized Care Plan")
+        
+        # Logic to find the non-emergency match...
+        # If match found (e.g., Common Cold):
+        st.write("### Analysis: Common
