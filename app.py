@@ -62,5 +62,21 @@ if option != "Select...":
         st.subheader("📋 Your Personalized Care Plan")
         
         # Logic to find the non-emergency match...
-        # If match found (e.g., Common Cold):
-        st.write("### Analysis: Common
+        # Step 3: Standard Care (The "Treatment Plan")
+        st.subheader("📋 Your Personalized Care Plan")
+        
+        # We search for the diagnosis in your dictionaries
+        # This is a placeholder - make sure this matches your dictionary keys!
+        st.write("### Analysis: Condition Detected") 
+        
+        col1, col2 = st.columns(2)
+        
+        if preference in ["Integrated (Both)", "Western / Clinical 💊"]:
+            with col1:
+                st.info("**Western Remedy**")
+                st.write("Please refer to the clinical guidelines in your data.")
+        
+        if preference in ["Integrated (Both)", "Traditional / Natural 🌿"]:
+            with col2:
+                st.success("**Traditional Remedy**")
+                st.write("Please refer to the natural remedies in your data.")
