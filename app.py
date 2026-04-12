@@ -87,7 +87,7 @@ DERM_DATA = {
     },
 # TIER 1: Minor Issue (Home Remedy) - Minor Irritation
     "CONTACT_DERMATITIS_TIER1": {
-        "symptoms": ["itchy rash", "small bumps", "skin irritation", "redness in patches"],
+        "symptoms": ["itchy", "rash", "small bumps", "skin irritation", "redness in patches"],
         "triage_question": "Is the rash located only where your skin touched a specific irritant (e.g., jewelry, plant, new soap) (Y/N)?",
         "diagnosis": "Contact Dermatitis (Minor Rash).",
         "western_remedy": "Avoid the irritant. Apply an over-the-counter hydrocortisone cream and a cooling anti-itch lotion (like Calamine).",
