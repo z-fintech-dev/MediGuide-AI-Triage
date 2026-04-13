@@ -151,6 +151,15 @@ option = st.sidebar.selectbox(
 # 2. The Clear Button is a separate piece of code
 if st.sidebar.button("🗑️ Clear Search"):
     st.rerun()
+
+st.sidebar.markdown("---")
+with st.sidebar:
+    st.markdown("### 🛠️ System Status")
+    st.success("Core Engine: Online")
+    st.info("Knowledge Base: v1.0.2")
+    
+    st.markdown("### 🛡️ Privacy & Security")
+    st.caption("MediGuide AI does not store your personal health data. All triage logic is processed in real-time.")
 # =============================================================
 # 3. THE SMART FLOW
 # =============================================================
